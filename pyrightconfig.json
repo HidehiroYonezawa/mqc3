@@ -1,0 +1,12 @@
+{
+    "typeCheckingMode": "basic",
+    "include": [
+        "**/*.py",
+        "**/pyproject.toml",
+        "**/*.ipynb"
+    ],
+    "exclude": [
+        "**/pb/mqc3_cloud/**/*.py",
+        "**/pb/mqc3_cloud/**/*.pyi",
+    ]
+}

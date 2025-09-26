@@ -1,0 +1,82 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mqc3"
+description = "Measurement-based Quantum Computation with Continuous-variable Cluster states"
+readme = "README.md"
+requires-python = ">=3.10"
+
+# authors =
+license = "MIT"
+# keywords =
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Scientific/Engineering :: Quantum Computing",
+  "Typing :: Typed",
+]
+
+dynamic = ["version"]
+
+dependencies = [
+  "typing_extensions >= 4.12",
+  'tzdata >= 2025.1; platform_system == "Windows"',
+
+  "numpy >= 2.1, < 3",
+  "networkx >= 3.4, < 4",
+
+  "grpcio ~= 1.71",
+  "protobuf ~= 5.29",
+  "requests >= 2.31, < 3",
+]
+
+# [project.urls]
+
+[project.optional-dependencies]
+all = ["matplotlib"]
+dev = [
+  "matplotlib",
+  "sympy",
+  "scipy",
+
+  # Test
+  "pytest",
+  "allpairspy",
+  "pytest-xdist",
+  "pytest-cov",
+  "pathos",
+
+  # Document
+  "sphinx",
+  "sphinx_copybutton",
+  "sphinxcontrib-bibtex",
+  "myst-parser",
+  "myst-nb",
+  "furo",
+  "jupyter",
+  "ipykernel",
+]
+sf = [
+  "strawberryfields == 0.23.0",
+  "scipy < 1.14",               # To avoid import errors with the strawberryfields package
+]
+
+[tool.setuptools.dynamic]
+version = { attr = "mqc3.__version__.__version__" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["mqc3*"]
+namespaces = false
+exclude = ["build", "tests"]
+
+[tool.setuptools.package-data]
+mqc3 = ["py.typed"]
+
+[tool.coverage.run]
+omit = ["tests/*", "src/mqc3/pb/mqc3_cloud/*"]
