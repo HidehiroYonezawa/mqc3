@@ -2,9 +2,9 @@
 
 # MQC3 Documentation
 
-MQC3 is a Python library for performing measurement-based optical quantum computing.
-MQC3 helps build continuous-variable quantum circuits simply and intuitively.
-Once you have built a quantum circuit, you can easily execute it on the optical quantum computer, which performs measurement-based quantum computing (MBQC) using a two-dimensional cluster state.
+MQC3 is a Python library designed for measurement-based optical quantum computing.
+It provides a simple and intuitive way to construct continuous-variable quantum circuits.
+These circuits can then be easily executed on an optical quantum computer that implements the measurement-based quantum computing (MBQC) paradigm using a two-dimensional cluster state.
 
 ## GET STARTED
 
