@@ -212,5 +212,5 @@ def savefig(m: MachineryRepr, filename: str, **kwargs: Unpack[_VisualizeConfigDi
         >>> savefig(machinery_repr, "machinery.png", fontsize=6, readout_edge_color="red")
     """
     fig = make_figure(m, **kwargs)
-    fig.savefig(filename)
+    fig.savefig(filename, bbox_inches="tight")
     plt.close(fig)
