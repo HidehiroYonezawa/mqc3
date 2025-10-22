@@ -48,7 +48,7 @@ class CircuitShotMeasuredValue(UserList[CircuitOperationMeasuredValue]):
             index (int): Index of the measured mode.
 
         Returns:
-            int: Measured value.
+            float: Measured value.
         """
         return next((item.value for item in self if item.index == index), None)
 
