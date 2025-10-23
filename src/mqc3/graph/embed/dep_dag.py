@@ -6,6 +6,7 @@ This module provides a class to construct the dependency graph from a quantum ci
 
 import math
 from collections import defaultdict
+from math import pi
 
 import networkx as nx
 
@@ -211,7 +212,9 @@ class _DependencyBuilder:
 
         for mode, initial_state in enumerate(circuit.initial_states):
             if isinstance(initial_state, HardwareConstrainedSqueezedState):
-                self._add_initialization(mode, initial_state.theta)
+                # The `theta` argument is the measurement angle.
+                # `initial_state.phi` is the squeezing angle of the initialized mode.
+                self._add_initialization(mode, theta=initial_state.phi - pi / 2)
             else:
                 self._add_initialization(mode)
 

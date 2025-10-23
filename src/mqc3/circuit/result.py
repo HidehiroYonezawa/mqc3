@@ -42,10 +42,13 @@ class CircuitShotMeasuredValue(UserList[CircuitOperationMeasuredValue]):
         super().__init__(initlist or [])
 
     def get_value(self, index: int) -> float | None:
-        """Get the measured value of the specified index.
+        """Get the measured value of the specified mode.
+
+        Args:
+            index (int): Index of the measured mode.
 
         Returns:
-            int: Measured value.
+            float: Measured value.
         """
         return next((item.value for item in self if item.index == index), None)
 

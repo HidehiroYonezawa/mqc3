@@ -204,7 +204,8 @@ class Measurement(Operation):
 class Initialization(Operation):
     r"""Measure :math:`\hat{x} \sin \theta+\hat{p} \cos \theta` and initialize a mode.
 
-    A mode is initialized with a squeezing angle :math:`\theta-\frac{\pi}{2}`.
+    A mode is initialized with a squeezing angle :math:`\phi=\theta+\frac{\pi}{2}`.
+    x-squeezed states correspond to :math:`\phi=0`, while p-squeezed states correspond to :math:`\phi=\pi/2`.
     """
 
     def __init__(  # noqa: PLR0913

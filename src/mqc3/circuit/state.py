@@ -516,21 +516,23 @@ class BosonicState(State):
 class HardwareConstrainedSqueezedState:
     """A squeezed state for hardware execution with a fixed squeezing level.
 
-    Only the squeezing angle 'theta' is user-controllable due to hardware constraints.
+    Only the squeezing angle 'phi' is user-controllable due to hardware constraints.
     """
 
-    theta: float = pi / 2
-    """Squeezing angle 'theta' [radians].
+    phi: float = 0.0
+    r"""Squeezing angle :math:`\phi` [radians].
 
     Determines the squeezing direction in phase space.
+    Assuming that the squeezing level is positive,
+    x-squeezed states correspond to :math:`\phi=0`, while p-squeezed states correspond to :math:`\phi=\pi/2`.
     """
 
     def proto(self) -> PbHardwareConstrainedSqueezedState:  # noqa: D102
-        return PbHardwareConstrainedSqueezedState(theta=self.theta)
+        return PbHardwareConstrainedSqueezedState(theta=pi / 2 - self.phi)
 
     @staticmethod
     def construct_from_proto(proto: PbHardwareConstrainedSqueezedState) -> HardwareConstrainedSqueezedState:  # noqa: D102
-        return HardwareConstrainedSqueezedState(proto.theta)
+        return HardwareConstrainedSqueezedState(phi=pi / 2 - proto.theta)
 
 
 InitialState = BosonicState | HardwareConstrainedSqueezedState
