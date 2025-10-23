@@ -190,6 +190,35 @@ class GaussianState(State):
         """
         return self._cov
 
+    def extract_mode(self, mode: int) -> GaussianState:
+        """Extract the specified mode from the GaussianState.
+
+        This method extracts the elements corresponding to the specified modes from the mean vector and
+        covariance matrix of a GaussianState, and create a new GaussianState. However, it is not guaranteed that
+        the resulting parameters will satisfy the conditions required for GaussianState.
+
+        Args:
+            mode (int): The index of the mode to extract.
+
+        Returns:
+            GaussianState: The extracted mode.
+
+        Raises:
+            ValueError: If the mode index is out of range.
+        """
+        if mode >= self.n_modes:
+            msg = "Mode index out of range."
+            raise ValueError(msg)
+
+        mean = np.array((self._mean[mode], self._mean[mode + self.n_modes]))
+        cov = np.array(
+            [
+                [self._cov[mode, mode], self._cov[mode, mode + self.n_modes]],
+                [self._cov[mode + self.n_modes, mode], self._cov[mode + self.n_modes, mode + self.n_modes]],
+            ],
+        )
+        return GaussianState(mean, cov)
+
     def __str__(self) -> str:
         """Get the parameters of the GaussianState as a string.
 
@@ -411,6 +440,21 @@ class BosonicState(State):
             GaussianState: The i-th GaussianState.
         """
         return self.gaussian_states[i]
+
+    def extract_mode(self, mode: int) -> BosonicState:
+        """Extract a single mode from the BosonicState.
+
+        This method extracts the elements corresponding to the specified modes from the mean vector and
+        covariance matrix of a BosonicState, and create a new BosonicState. However, it is not guaranteed that
+        the resulting parameters will satisfy the conditions required for BosonicState.
+
+        Args:
+            mode (int): The index of the mode to extract.
+
+        Returns:
+            BosonicState: A new BosonicState containing only the specified mode.
+        """
+        return BosonicState(self.coeffs, [gauss.extract_mode(mode) for gauss in self.gaussian_states])
 
     def __str__(self) -> str:
         """Get the parameters of the BosonicState as a string.

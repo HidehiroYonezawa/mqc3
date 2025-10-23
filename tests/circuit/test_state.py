@@ -7,6 +7,7 @@ from math import cos, sin
 
 import numpy as np
 import pytest
+from numpy.testing import assert_array_equal
 
 from mqc3.circuit.program import CircuitRepr
 from mqc3.circuit.state import BosonicState, GaussianState
@@ -303,3 +304,72 @@ def test_convert_bosonic_state() -> None:
     assert len(reconstructed_state.gaussian_states) == 1
     assert np.allclose(reconstructed_state.gaussian_states[0].mean, g_state.mean)
     assert np.allclose(reconstructed_state.gaussian_states[0].cov, g_state.cov)
+
+
+def test_extract_mode() -> None:
+    mean0 = np.array([1.0 + 2.0j, -3.5 + 0.5j, 2.2 - 1.1j, 0.0 + 4.0j, -1.0 - 2.0j, 3.3 + 0.0j], dtype=np.complex128)
+    cov0 = np.array(
+        [
+            [6.0, 2.0, 1.0, 0.5, 1.5, 0.0],
+            [2.0, 5.0, 0.5, 1.0, 0.0, 1.2],
+            [1.0, 0.5, 4.0, 0.8, 0.6, 0.3],
+            [0.5, 1.0, 0.8, 3.5, 0.9, 0.7],
+            [1.5, 0.0, 0.6, 0.9, 4.5, 1.1],
+            [0.0, 1.2, 0.3, 0.7, 1.1, 3.8],
+        ],
+        dtype=np.float64,
+    )
+    g_state0 = GaussianState(mean0, cov0)
+
+    mean1 = np.array([0.5 - 1.2j, -2.0 + 3.3j, 4.1 + 0.0j, -0.7 - 0.7j, 1.5 + 2.5j, -3.0 + 1.0j], dtype=np.complex128)
+    cov1 = np.array(
+        [
+            [5.0, -1.0, 0.5, 0.0, -0.3, 0.7],
+            [-1.0, 4.5, -0.6, 0.9, 0.2, 0.0],
+            [0.5, -0.6, 3.8, 0.4, -0.5, 0.3],
+            [0.0, 0.9, 0.4, 4.2, 0.6, -0.8],
+            [-0.3, 0.2, -0.5, 0.6, 3.9, 0.4],
+            [0.7, 0.0, 0.3, -0.8, 0.4, 4.1],
+        ],
+        dtype=np.float64,
+    )
+    g_state1 = GaussianState(mean1, cov1)
+
+    coeffs = np.array([0.7, 0.3], dtype=np.complex128)
+    state = BosonicState(coeffs, [g_state0, g_state1])
+    extracted_state0 = state.extract_mode(0)
+    extracted_state1 = state.extract_mode(1)
+    extracted_state2 = state.extract_mode(2)
+
+    assert extracted_state0.get_coeff(0) == 0.7
+    assert extracted_state0.get_coeff(1) == 0.3
+    assert extracted_state1.get_coeff(0) == 0.7
+    assert extracted_state1.get_coeff(1) == 0.3
+    assert extracted_state2.get_coeff(0) == 0.7
+    assert extracted_state2.get_coeff(1) == 0.3
+    with pytest.raises(IndexError):
+        extracted_state0.get_coeff(2)
+    with pytest.raises(IndexError):
+        extracted_state1.get_coeff(2)
+    with pytest.raises(IndexError):
+        extracted_state2.get_coeff(2)
+
+    assert_array_equal(extracted_state0.get_gaussian_state(0).mean, mean0[[0, 3]])
+    assert_array_equal(extracted_state1.get_gaussian_state(0).mean, mean0[[1, 4]])
+    assert_array_equal(extracted_state2.get_gaussian_state(0).mean, mean0[[2, 5]])
+    assert_array_equal(extracted_state0.get_gaussian_state(1).mean, mean1[[0, 3]])
+    assert_array_equal(extracted_state1.get_gaussian_state(1).mean, mean1[[1, 4]])
+    assert_array_equal(extracted_state2.get_gaussian_state(1).mean, mean1[[2, 5]])
+    with pytest.raises(IndexError):
+        extracted_state0.get_gaussian_state(2)
+    with pytest.raises(IndexError):
+        extracted_state1.get_gaussian_state(2)
+    with pytest.raises(IndexError):
+        extracted_state2.get_gaussian_state(2)
+
+    assert_array_equal(extracted_state0.get_gaussian_state(0).cov, cov0[np.ix_([0, 3], [0, 3])])
+    assert_array_equal(extracted_state1.get_gaussian_state(0).cov, cov0[np.ix_([1, 4], [1, 4])])
+    assert_array_equal(extracted_state2.get_gaussian_state(0).cov, cov0[np.ix_([2, 5], [2, 5])])
+    assert_array_equal(extracted_state0.get_gaussian_state(1).cov, cov1[np.ix_([0, 3], [0, 3])])
+    assert_array_equal(extracted_state1.get_gaussian_state(1).cov, cov1[np.ix_([1, 4], [1, 4])])
+    assert_array_equal(extracted_state2.get_gaussian_state(1).cov, cov1[np.ix_([2, 5], [2, 5])])
