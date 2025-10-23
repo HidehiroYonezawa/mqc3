@@ -860,7 +860,7 @@ def _init_figure(figsize: tuple[float, float]) -> tuple[Figure, Axes]:
 
     ax = fig.add_subplot(1, 1, 1)
     ax.axis("off")
-    ax.set_aspect("equal", "datalim")
+    ax.set_aspect("equal", "box")
     ax.autoscale(enable=True)
 
     return fig, ax
@@ -952,6 +952,17 @@ def make_figure(graph: GraphRepr, **kwargs: Unpack[_VisualizeConfigDict]) -> Fig
         _plot_feedforward(ax, formatted, config, io_modes_dict)
     if config.title:
         fig.suptitle(config.title)
+
+    # Adjust the view limits of both x-axis and y-axis.
+    # The origin is the same as the center of the macronode at (row, col) = (0, 0).
+    ax.set_xlim(
+        -2 * config.macronode_radius,
+        3 * (formatted.n_steps - 1) * config.macronode_radius + 2 * config.macronode_radius,
+    )
+    ax.set_ylim(
+        -2 * config.macronode_radius - 3 * (formatted.n_local_macronodes - 1) * config.macronode_radius,
+        2 * config.macronode_radius,
+    )
 
     return fig
 
