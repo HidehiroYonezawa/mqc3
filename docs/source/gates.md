@@ -466,7 +466,7 @@ When converted to the machinery representation, the setting is that feedforward 
 *   - Parameters
     - {math}`\theta`
 *   - Operation
-    - {math}`M\left(\theta\right)`: Measure {math}`\hat{x} \sin \theta+\hat{p} \cos \theta` and initialize a mode with a squeezing angle {math}`-\theta`
+    - {math}`M\left(\theta\right)`: Measure {math}`\hat{x} \sin \theta+\hat{p} \cos \theta` and initialize a mode with a squeezing angle {math}`\theta + \frac{\pi}{2}`
 *   - Measurement angles (through)
     - {math}`(\theta, \theta, \theta, \theta)`
 ```

@@ -160,7 +160,7 @@ class CircuitRepr:
             self._push(modes, arg)
         self._n_modes = max(self.n_modes, max(modes) + 1)
         while len(self._initial_states) < self._n_modes:
-            self._initial_states.append(HardwareConstrainedSqueezedState(0.0))
+            self._initial_states.append(HardwareConstrainedSqueezedState())
         return Operand([QuMode(mode) for mode in modes], self)
 
     def get_operation(self, i: int) -> Operation:

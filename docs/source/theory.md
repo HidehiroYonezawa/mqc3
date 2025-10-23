@@ -47,6 +47,29 @@ In the machinery handled by MQC3, the desired operations are achieved by repeate
 Conceptual diagrams of {math}`x`-squeezed and {math}`p`-squeezed states. The red ellipses represent the probability density functions of measured values.
 ```
 
+(sec:squeezing-level-and-squeezing-angle)=
+
+#### Squeezing level and squeezing angle
+
+Unsheared squeezed state with {math}`s` dB squeezing level means a state where the {math}`x`- ({math}`p`-) directional variance is {math}`10^{-s/10}` ({math}`10^{s/10}`) times that of the vacuum state, {math}`\hbar/2`.
+When {math}`s` is positive, this is {math}`x`-squeezed state.
+
+```{note}
+If an anti-squishing level {math}`a` is also provided, the {math}`p`-directional variance becomes {math}`10^{a/10}` instead.
+```
+
+The squeezed state with squeezing angle {math}`\phi` is obtained by applying a rotation of angle {math}`\phi` as
+
+```{math}
+\left(\begin{array}{cc}
+\cos \phi & -\sin \phi \\
+\sin \phi & \cos \phi
+\end{array}\right)\binom{\hat{x}}{\hat{p}}
+```
+
+to such an unsheared squeezed state.
+
+
 ### Operators and observables
 
 In the Heisenberg picture, when a unitary operator {math}`\hat{U}` acts on a quantum state, the observable {math}`\hat{O}` is transformed as
@@ -488,8 +511,8 @@ In MQC3, for any type of macronode {math}`k`, not limited to measurement macrono
 The output modes of measurement macronodes are squeezed states that do not retain the information of the input modes.
 Thus, measurement macronodes can also be regarded as macronodes that reinitialize the states and are referred to as initialization macronodes.
 In MQC3, all modes in quantum computation are treated as being generated from initialization macronodes.
-In an initialization macronode {math}`k`, the squeezing level of the output mode cannot be set, but the squeezing angle can be configured.
-Here squeezing angle {math}`\vartheta^k` refers to the squeezing in the direction of {math}`\hat{x}\sin{\vartheta^k}+\hat{p}\cos{\vartheta^k}`, which can be achieved simply by setting {math}`\theta_a^k\equiv\theta_b^k\equiv\theta_c^k\equiv\theta_d^k\equiv -\vartheta^k` (mod {math}`2\pi`).
+In an initialization macronode {math}`k`, the squeezing level of the output mode can only be configured as a backend parameter at most, and cannot be set directly within the macronode itself.
+Instead, the squeezing angle can be configured as {math}`\phi\equiv\theta+\frac{\pi}{2}` (where {math}`\theta\equiv\theta_a^k\equiv\theta_b^k\equiv\theta_c^k\equiv\theta_d^k`, mod {math}`2\pi`).
 The feedforward applied to the initialized modes is formulated in {ref}`sec:initialization`.
 
 Due to the constraint between the measurement angles of the modes being measured and the squeezing angles of the modes being generated, it is uncommon for a single macronode to simultaneously perform both the desired measurement and initialization.
