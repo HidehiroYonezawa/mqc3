@@ -2,6 +2,8 @@
 
 Source files for the [MQC3 user documentation](source/index.md).
 
+The compiled documentation can also be found [here](https://hidehiroyonezawa.github.io/mqc3/).
+
 ## Introduction
 
 The user documentation is written in Markdown (`.md`) and Jupyter Notebook (`.ipynb`) formats, with one section per file.
